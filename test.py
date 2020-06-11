@@ -80,9 +80,9 @@ if __name__ == "__main__":
     test_split  = system_configs.test_split
 
     split = {
-        "training": train_split,
-        "validation": val_split,
-        "testing": test_split
+        "train": train_split,
+        "val": val_split,
+        "test": test_split
     }[args.split]
 
     print("loading all datasets...")
