@@ -120,9 +120,16 @@ class NetworkFactory(object):
 
     def load_pretrained_params(self, pretrained_model):
         print("loading from {}".format(pretrained_model))
+        model_dict = self.model.state_dict()
+
+        #Load only the layers that match, needed for different number of classes
         with open(pretrained_model, "rb") as f:
             params = torch.load(f)
-            self.model.load_state_dict(params)
+
+            params = {k: v for k, v in params.items() if
+                                k in model_dict and v.size() == model_dict[k].size()}
+
+            self.model.load_state_dict(params, strict=False)
 
     def load_params(self, iteration):
         cache_file = system_configs.snapshot_file.format(iteration)

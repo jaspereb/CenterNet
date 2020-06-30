@@ -22,7 +22,9 @@
 
         "chunk_sizes": [2],
 
-        "data_dir": "/home/jasper/Datasets/DayPlumsCoco"
+        "data_dir": "/home/jasper/Datasets/DayPlumsCoco",
+
+        "pretrain": "/home/jasper/git/CEIG/CenterNet/cache/nnet/CenterNet-104_480000.pkl"
     },
 
     "db": {

@@ -32,12 +32,15 @@ class DAYPLUMS(DETECTION):
         self._label_file = os.path.join(self._label_dir, "instances_{}.json")
         self._label_file = self._label_file.format(self._dataset)
 
+        print("looking for label files at {}".format(self._label_file))
+
         self._image_dir  = os.path.join(self._coco_dir, "images", self._dataset)
         self._image_file = os.path.join(self._image_dir, "{}")
 
         self._data = "coco"
-        self._mean = np.array([0.40789654, 0.44719302, 0.47026115], dtype=np.float32)
-        self._std  = np.array([0.28863828, 0.27408164, 0.27809835], dtype=np.float32)
+        print("Loading dataset normalisation values from python file")
+        self._mean = np.array([0.4347932004990081, 0.4289053993785929, 0.41956633363253165], dtype=np.float32)
+        self._std  = np.array([0.22094698886975508, 0.20074138848218925, 0.21119804990181], dtype=np.float32)
         self._eig_val = np.array([0.2141788, 0.01817699, 0.00341571], dtype=np.float32)
         self._eig_vec = np.array([
             [-0.58752847, -0.69563484, 0.41340352],

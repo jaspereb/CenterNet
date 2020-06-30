@@ -89,7 +89,8 @@ def kp_detection(db, k_ind, data_aug, debug):
 
         # reading image
         image_file = db.image_file(db_ind)
-        # print("Attempting to read image file {}".format(image_file))
+        # print("JASPER: Attempting to read image file {}".format(image_file))
+
         image      = cv2.imread(image_file)
 
         # print(type(image))

@@ -5,6 +5,7 @@ import json
 import copy
 import numpy as np
 import torch
+import time
 
 from PIL import Image, ImageDraw, ImageFont
 import matplotlib.pyplot as plt
@@ -84,6 +85,8 @@ def kp_detection(db, nnet, result_dir, debug=False, decode_func=kp_decode):
     }[db.configs["nms_algorithm"]]
 
     top_bboxes = {}
+    print("Testing on a total of {} images".format(num_images))
+    tic = time.time()
     for ind in tqdm(range(0, num_images), ncols=80, desc="locating kps"):
         db_ind = db_inds[ind]
 
@@ -126,7 +129,7 @@ def kp_detection(db, nnet, result_dir, debug=False, decode_func=kp_decode):
 
             images = np.concatenate((images, images[:, :, :, ::-1]), axis=0)
             images = torch.from_numpy(images)
-            dets, center = decode_func(nnet, images, K, ae_threshold=ae_threshold, kernel=nms_kernel)
+            dets, center = decode_func(nnet, images, K, ae_threshold=ae_threshold, kernel=nms_kernel) #this actually runs the net
             dets   = dets.reshape(2, -1, 8)
             center = center.reshape(2, -1, 4)
             dets[1, :, [0, 2]] = out_width - dets[1, :, [2, 0]]
@@ -307,6 +310,9 @@ def kp_detection(db, nnet, result_dir, debug=False, decode_func=kp_decode):
             plt.close()
             #cv2.imwrite(debug_file, image, [int(cv2.IMWRITE_JPEG_QUALITY), 100])
 
+    toc = time.time()
+    print("Running detections on test set took {} sec".format(toc-tic))
+
     result_json = os.path.join(result_dir, "results.json")
     detections  = db.convert_to_coco(top_bboxes)
     with open(result_json, "w") as f:
@@ -314,7 +320,7 @@ def kp_detection(db, nnet, result_dir, debug=False, decode_func=kp_decode):
 
     cls_ids   = list(range(1, categories + 1))
     image_ids = [db.image_ids(ind) for ind in db_inds]
-    db.evaluate(result_json, cls_ids, image_ids)
+    db.evaluate(result_json, cls_ids, image_ids) #This calls the coco api evaluate fn
     return 0
 
 def testing(db, nnet, result_dir, debug=False):
