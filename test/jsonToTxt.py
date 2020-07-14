@@ -5,7 +5,7 @@ import json
 import os
 
 
-dirPath = '/home/jasper/git/CEIG/CenterNet/results/CenterNet-104-DayTransferPlums/180000/test'
+dirPath = '/home/jasper/git/CEIG/CenterNet/results/CenterNet-104-DayTransferPlums/2240/test'
 filePath = os.path.join(dirPath, 'results.json')
 outFile = os.path.join(dirPath, 'detections.txt')
 
